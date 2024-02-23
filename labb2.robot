@@ -28,6 +28,7 @@ ${logout}       //*[@id="logout"]
 
 
 *** Test Cases ***
+
 insert incorrect personal info
     log in
     choose date
@@ -38,6 +39,23 @@ insert incorrect personal info
 creating account with incorrect personal info
     create user
 
+car booking
+    Run Keyword And Continue On Failure    User logs into website    ${usermail}    ${pass}         #DDT
+    User chooses date for trip
+    User books car
+    User enters info
+    User confirms booking
+
+
+log in function
+    testing log in function
+
+log out function
+    testing log out function
+
+
+
+
 
 *** Keywords ***
 setup
@@ -47,7 +65,12 @@ setup
     Set Selenium Speed    0.5
 
 
+
 log in
+
+User logs into website
+    [Arguments]    ${username}    ${password}                   #DDT
+
     [Documentation]     User enters information to log in
     [Tags]      log in
     Input Text    ${e-mail field}    ${usermail}
@@ -55,7 +78,11 @@ log in
     Click Element    ${login}
     Wait Until Page Contains Element    //*[@id="welcomePhrase"]
 
+
 choose date
+
+User chooses date for trip
+
     [Documentation]     User enters date for the trip
     [Tags]      date
     Click Element    //*[@id="reset"]
@@ -63,11 +90,16 @@ choose date
     Input Text    //*[@id="end"]    ${end date}
     Click Element    ${continue}
 
+
 car
+
+User books car
+
     [Documentation]     User chooses car
     [Tags]      Car
     Wait Until Page Contains Element    //*[@id="questionText"]
     Click Element    ${car}
+
 
 info
     [Documentation]     User enters incorrect personal info
@@ -75,17 +107,30 @@ info
     Wait Until Page Contains Element    //*[@id="questionText"]
     Input Text    //*[@id="cardNum"]    ${card no.}
     Input Text    //*[@id="fullName"]    21
+
+User enters info
+    [Documentation]     User enters personal info
+    [Tags]      info
+    Wait Until Page Contains Element    //*[@id="questionText"]
+    Input Text    //*[@id="cardNum"]    ${card no.}
+    Input Text    //*[@id="fullName"]    ${firstname} ${lastname}
+
     Select From List By Index    //*[@id="confirmSelection"]/form/select[1]     ${card day}
     Select From List By Index    //*[@id="confirmSelection"]/form/select[2]     ${card month}
     Input Text    //*[@id="cvc"]    ${cvc}
     Click Element    ${confirm}
 
+
 confirm
+
+User confirms booking
+
     [Documentation]     confirm booking
     [Tags]              booking
     Wait Until Page Contains Element    //*[@id="confirmMessage"]/label
     Click Element    ${mypage}
     Wait Until Page Contains Element    //*[@id="historyText"]
+
 
 
 create user
@@ -103,3 +148,29 @@ create user
     Input Text    //*[@id="confirmPassword"]    abc123
     Click Element    //*[@id="create"]
     Wait Until Page Contains Element    //*[@id="questionText"]
+
+testing log in function
+    [Documentation]     testing function log in
+    [Tags]              function log in
+    Wait Until Page Contains Element    ${title}
+    Input Text    ${e-mail field}    ${usermail}
+    Input Text    ${pass field}    ${pass}
+    Click Element    ${login}
+    Wait Until Page Contains Element    //*[@id="welcomePhrase"]
+
+
+
+testing log out function
+    [Documentation]     test function log out
+    [Tags]              function log out
+    Wait Until Page Contains Element    ${title}
+    Input Text    ${e-mail field}    ${usermail}
+    Input Text    ${pass field}    ${pass}
+    Click Element    ${login}
+    Wait Until Page Contains Element    //*[@id="welcomePhrase"]
+    Click Element    ${logout}
+    Wait Until Page Contains Element    //*[@id="login"]
+
+
+
+
